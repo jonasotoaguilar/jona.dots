@@ -1,0 +1,16 @@
+id = "jona.editor"
+name = "jona-editor"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Open nvim in a herdr popup (lazygit edit bridge)"
+platforms = ["linux"]
+
+# Popup pane summoned by lazygit's os.edit via scripts/lazygit-edit.py.
+# EDIT_PROG/EDIT_ARGS overrides exist for smoke tests; production uses nvim.
+[[panes]]
+id = "edit"
+title = "nvim"
+placement = "popup"
+width = "80%"
+height = "80%"
+command = ["bash", "-c", "exec ${EDIT_PROG:-nvim} ${EDIT_ARGS} -- \"$EDIT_FILE\""]

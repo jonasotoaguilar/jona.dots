@@ -1,0 +1,15 @@
+# Minimal production build-context exclusions.
+# Keep the image build context small and secret-free; the Dockerfile is not
+# needed at runtime (multi-stage COPY already produced the artifacts).
+.git
+.gitignore
+.env
+.env.*
+node_modules
+dist
+coverage
+*.log
+Dockerfile*
+.dockerignore
+README.md
+tests/
