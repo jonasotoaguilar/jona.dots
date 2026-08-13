@@ -1,0 +1,9 @@
+# yamlfmt config for the fallback YAML formatter (yaml-format.sh).
+# type: basic preserves the author's proportional style instead of forcing a
+# fixed layout; retain_line_breaks keeps the document's blank-line structure;
+# drop_merge_tag keeps merge keys (<<) without emitting the !!merge tag.
+formatter:
+  type: basic
+  indent: 2
+  retain_line_breaks: true
+  drop_merge_tag: true

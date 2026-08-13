@@ -1,0 +1,66 @@
+# efm-langserver config for opencode (loaded via -c).
+# Wraps fast CLI scanners as LSP diagnostics: shellcheck, actionlint,
+# and hadolint. SAST scanners (semgrep, bandit) run as CLI tools per
+# AGENTS.md, not in the LSP loop.
+version: 2
+root-markers:
+  - .git/
+# OpenCode waits up to 5s for diagnostics after Write/Edit/ApplyPatch.
+# All remaining tools finish well inside that window, so no debounce is needed.
+lint-debounce: 0s
+tools:
+  # Shellcheck gcc format. %t captures one character, producing
+  # %trror/%tarning/%tote patterns.
+  shellscript-shellcheck: &shellcheck
+    lint-command: 'shellcheck -f gcc -x -'
+    lint-stdin: true
+    lint-after-open: true
+    lint-ignore-exit-code: true
+    lint-formats:
+      - '%f:%l:%c: %trror: %m'
+      - '%f:%l:%c: %tarning: %m'
+      - '%f:%l:%c: %tote: %m'
+  # Actionlint only runs for actual GitHub Actions workflows. Actionlint
+  # reports its own structural errors plus shellcheck findings embedded in
+  # the message ("SC####:severity:..."), so jq maps shellcheck severity to
+  # error/warning/info; structural errors fall back to error.
+  yaml-actionlint: &actionlint
+    lint-command: >-
+      case "${INPUT}" in */.github/workflows/*) actionlint -format '{{json .}}' - ;; esac | jq -r --arg f '${INPUT}'             '.[] | "\($f):\(.line):\(.column): " + (.message | capture("SC[0-9]+:(?<sev>[a-z]+):").sev // "error" | if . == "error" then "error" elif . == "warning" then "warning" else "info" end) + ": " + .message'
+    lint-stdin: true
+    lint-after-open: true
+    lint-ignore-exit-code: true
+    lint-formats:
+      - '%f:%l:%c: %trror: %m'
+      - '%f:%l:%c: %tarning: %m'
+      - '%f:%l:%c: %tnfo: %m'
+  # Dockerfiles with .dockerfile extension (languageId "dockerfile").
+  dockerfile-hadolint: &hadolint
+    lint-command: 'hadolint --no-color -'
+    lint-stdin: true
+    lint-after-open: true
+    lint-ignore-exit-code: true
+    lint-formats:
+      - '%f:%l %*[A-Z0-9] %trror: %m'
+      - '%f:%l %*[A-Z0-9] %tarning: %m'
+      - '%f:%l %*[A-Z0-9] %tnfo: %m'
+  # OpenCode sends languageId "plaintext" for Dockerfile and Dockerfile.*.
+  plaintext-hadolint-dockerfile: &hadolint-plain
+    lint-command: >-
+      case "${INPUT}" in */Dockerfile|*/Dockerfile.*|Dockerfile) hadolint --no-color - ;; esac
+    lint-stdin: true
+    lint-after-open: true
+    lint-ignore-exit-code: true
+    lint-formats:
+      - '%f:%l %*[A-Z0-9] %trror: %m'
+      - '%f:%l %*[A-Z0-9] %tarning: %m'
+      - '%f:%l %*[A-Z0-9] %tnfo: %m'
+languages:
+  shellscript:
+    - <<: *shellcheck
+  yaml:
+    - <<: *actionlint
+  dockerfile:
+    - <<: *hadolint
+  plaintext:
+    - <<: *hadolint-plain

@@ -1,0 +1,13 @@
+{
+	"$schema": "https://opencode.ai/tui.json",
+	"diff_style": "auto",
+	"plugin": [
+		"opencode-sdd-engram-manage",
+		"opencode-subagent-statusline",
+		"opencode-tokenmeter-tui"
+	],
+	"scroll_acceleration": {
+		"enabled": true
+	},
+	"scroll_speed": 5
+}

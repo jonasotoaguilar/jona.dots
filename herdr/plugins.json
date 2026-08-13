@@ -1,0 +1,969 @@
+[
+  {
+    "plugin_id": "dave.token-dashboard",
+    "name": "Token Dashboard",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Live token spend dashboard + cost notifications for Herdr agent panes",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/dave.token-dashboard-c1bf535be307/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/dave.token-dashboard-c1bf535be307",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "command": [
+          "./scripts/build.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open-dashboard",
+        "title": "Open Token Dashboard",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./bin/token-dashboard",
+          "--open"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.agent_status_changed",
+        "command": [
+          "./bin/token-dashboard",
+          "--notify"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "dashboard",
+        "title": "Token Dashboard",
+        "placement": "tab",
+        "command": [
+          "./bin/token-dashboard"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "Davidcreador",
+      "repo": "herdr-token-dashboard",
+      "resolved_commit": "213827723f1d3f8ef4d3ff071a0b623879e9cf6c",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/dave.token-dashboard-c1bf535be307",
+      "installed_unix_ms": 1786593067535
+    }
+  },
+  {
+    "plugin_id": "fullerzz.sesh",
+    "name": "Sesh for Herdr",
+    "version": "0.7.0",
+    "min_herdr_version": "0.8.0",
+    "description": "Sesh-style smart workspace/session manager for Herdr",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/fullerzz.sesh-ac3fc6b2e1d3/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/fullerzz.sesh-ac3fc6b2e1d3",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "go",
+          "build",
+          "-ldflags=-X=github.com/fullerzz/herdr-plugin-sesh/internal/app.Version=0.7.0",
+          "-o",
+          "bin/",
+          "./cmd/herdr-sesh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "last",
+        "title": "Switch to Previous Workspace",
+        "contexts": [
+          "workspace",
+          "pane"
+        ],
+        "command": [
+          "./bin/herdr-sesh",
+          "last"
+        ]
+      },
+      {
+        "id": "open-picker",
+        "title": "Open Sesh Picker",
+        "contexts": [
+          "workspace",
+          "pane"
+        ],
+        "command": [
+          "./bin/herdr-sesh",
+          "plugin",
+          "open-picker"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker",
+        "title": "Sesh Picker",
+        "placement": "overlay",
+        "command": [
+          "./bin/herdr-sesh",
+          "picker"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "fullerzz",
+      "repo": "herdr-plugin-sesh",
+      "resolved_commit": "bce883d973afac6499f79e062f8cf51a01de9fcb",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/fullerzz.sesh-ac3fc6b2e1d3",
+      "installed_unix_ms": 1786592867865
+    }
+  },
+  {
+    "plugin_id": "herdr-agent-title-sync",
+    "name": "Agent Title Sync",
+    "version": "0.2.0",
+    "min_herdr_version": "0.7.5",
+    "description": "Automatically sync Herdr pane titles with coding-agent session titles.",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/herdr-agent-title-sync-3deef4563281/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/herdr-agent-title-sync-3deef4563281",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "startup": [
+      {
+        "command": [
+          "node",
+          "--no-warnings",
+          "src/index.ts",
+          "start-watcher"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "install-integrations",
+        "title": "Install required agent integrations",
+        "command": [
+          "node",
+          "--no-warnings",
+          "src/index.ts",
+          "install-integrations"
+        ]
+      },
+      {
+        "id": "start-watcher",
+        "title": "Start or restart the title watcher",
+        "command": [
+          "node",
+          "--no-warnings",
+          "src/index.ts",
+          "start-watcher"
+        ]
+      },
+      {
+        "id": "stop-watcher",
+        "title": "Stop the title watcher",
+        "command": [
+          "node",
+          "--no-warnings",
+          "src/index.ts",
+          "stop-watcher"
+        ]
+      },
+      {
+        "id": "sync-all",
+        "title": "Sync all agent pane titles",
+        "command": [
+          "node",
+          "--no-warnings",
+          "src/index.ts",
+          "sync-all"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "winoooops",
+      "repo": "herdr-agent-title-sync",
+      "resolved_commit": "92d711bcce5dffac539836fe67febfa665a1b4b1",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/herdr-agent-title-sync-3deef4563281",
+      "installed_unix_ms": 1786592547754
+    }
+  },
+  {
+    "plugin_id": "herdr-lazygit",
+    "name": "herdr-lazygit",
+    "version": "0.3.0",
+    "min_herdr_version": "0.7.0",
+    "description": "lazygit in a herdr split pane, with AI-assisted commit messages via custom commands.",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/herdr-lazygit-b11d62e75f78/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/herdr-lazygit-b11d62e75f78",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "/bin/sh",
+          "scripts/install-runtime.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Open lazygit",
+        "description": "Open lazygit in a split pane beside the current work (focus/toggle on repeat).",
+        "command": [
+          "bash",
+          "scripts/open-lazygit.sh"
+        ]
+      },
+      {
+        "id": "open-tab",
+        "title": "Open lazygit (tab)",
+        "description": "Open lazygit in its own tab (switch to it if already open, toggle off if focused).",
+        "command": [
+          "bash",
+          "scripts/open-lazygit-tab.sh"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "lazygit",
+        "title": "Git",
+        "placement": "split",
+        "command": [
+          "bash",
+          "-c",
+          "exec bash \"$HERDR_PLUGIN_ROOT/scripts/run-lazygit.sh\""
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "crokily",
+      "repo": "herdr-lazygit",
+      "resolved_commit": "a13e12c99e5e469edd73165cabba413c2a2fd698",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/herdr-lazygit-b11d62e75f78",
+      "installed_unix_ms": 1786508876008
+    }
+  },
+  {
+    "plugin_id": "herdr-sidebar",
+    "name": "herdr-sidebar",
+    "version": "0.7.0",
+    "min_herdr_version": "0.7.0",
+    "description": "VS Code-style sidebar: file explorer + source control (with ✧ AI commit messages) in one herdr pane.",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/herdr-sidebar-7ff2582a7c8a/plugins/herdr-sidebar/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/herdr-sidebar-7ff2582a7c8a/plugins/herdr-sidebar",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open-git",
+        "title": "Toggle source control",
+        "description": "Open a separate Source Control pane (focus it if open; close it if focused).",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/open-git.sh"
+        ]
+      },
+      {
+        "id": "open-git-windows",
+        "title": "Toggle source control",
+        "description": "Open a separate Source Control pane (focus it if open; close it if focused).",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-Command",
+          "$u=New-Object System.Text.UTF8Encoding($false); [Console]::OutputEncoding=$u; $OutputEncoding=$u; $b=$env:HERDR_BIN_PATH; if(-not $b){$b='herdr'}; $p=((& $b plugin list --json|ConvertFrom-Json).result.plugins|?{$_.plugin_id -eq 'herdr-sidebar'}).plugin_root; if($p -and $p.StartsWith('\\\\?\\')){$p=$p.Substring(4)}; & (Join-Path (Join-Path $p 'scripts') 'open-git.ps1')"
+        ]
+      },
+      {
+        "id": "open-sidebar",
+        "title": "Toggle sidebar",
+        "description": "Open the sidebar docked on the left (focus it if open; close it if focused).",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/open-sidebar.sh"
+        ]
+      },
+      {
+        "id": "open-sidebar-windows",
+        "title": "Toggle sidebar",
+        "description": "Open the sidebar docked on the left (focus it if open; close it if focused).",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "wscript",
+          "//B",
+          "scripts/launch-ensure.vbs",
+          "--toggle"
+        ]
+      },
+      {
+        "id": "redeploy",
+        "title": "Redeploy sidebar panes",
+        "description": "Close all sidebar panes in every workspace so they respawn on the latest build.",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/redeploy.sh"
+        ]
+      },
+      {
+        "id": "redeploy-windows",
+        "title": "Redeploy sidebar panes",
+        "description": "Close all sidebar panes in every workspace so they respawn on the latest build.",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/redeploy.ps1"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.focused",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/ensure-sidebar.sh"
+        ]
+      },
+      {
+        "on": "pane.focused",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "wscript",
+          "//B",
+          "scripts/launch-ensure.vbs"
+        ]
+      },
+      {
+        "on": "tab.created",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/ensure-sidebar.sh"
+        ]
+      },
+      {
+        "on": "tab.created",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "wscript",
+          "//B",
+          "scripts/launch-ensure.vbs"
+        ]
+      },
+      {
+        "on": "tab.focused",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/ensure-sidebar.sh"
+        ]
+      },
+      {
+        "on": "tab.focused",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "wscript",
+          "//B",
+          "scripts/launch-ensure.vbs"
+        ]
+      },
+      {
+        "on": "workspace.created",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/ensure-sidebar.sh"
+        ]
+      },
+      {
+        "on": "workspace.created",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "wscript",
+          "//B",
+          "scripts/launch-ensure.vbs"
+        ]
+      },
+      {
+        "on": "workspace.focused",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/ensure-sidebar.sh"
+        ]
+      },
+      {
+        "on": "workspace.focused",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "wscript",
+          "//B",
+          "scripts/launch-ensure.vbs"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "sidebar",
+        "title": "Sidebar",
+        "placement": "split",
+        "command": [
+          "./target/release/herdr-sidebar"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "alexarthurs",
+      "repo": "herdr-sidebar",
+      "subdir": "plugins/herdr-sidebar",
+      "resolved_commit": "dd5cc28aeae5860cffc11080c7613bf829286c72",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/herdr-sidebar-7ff2582a7c8a",
+      "installed_unix_ms": 1786515057689
+    }
+  },
+  {
+    "plugin_id": "herdr.collie",
+    "name": "Collie",
+    "version": "0.28.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Mobile web UI to monitor and reply to your agent herd, served over Tailscale",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/herdr.collie-1edf0e1e987e/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/herdr.collie-1edf0e1e987e",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "build"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "restart",
+        "title": "Restart web bridge",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "restart"
+        ]
+      },
+      {
+        "id": "start",
+        "title": "Start web bridge",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "start"
+        ]
+      },
+      {
+        "id": "status",
+        "title": "Bridge status",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "status"
+        ]
+      },
+      {
+        "id": "stop",
+        "title": "Stop web bridge",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "stop"
+        ]
+      },
+      {
+        "id": "uninstall",
+        "title": "Uninstall web bridge (remove service)",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "uninstall"
+        ]
+      },
+      {
+        "id": "update",
+        "title": "Update plugin",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "update"
+        ]
+      },
+      {
+        "id": "url",
+        "title": "Show bridge URL",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "url"
+        ]
+      },
+      {
+        "id": "version",
+        "title": "Show version",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "version"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "AltanS",
+      "repo": "collie",
+      "resolved_commit": "2910f40278f3ca1646fc472dd3589da4a47776e4",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/herdr.collie-1edf0e1e987e",
+      "installed_unix_ms": 1786568756861
+    }
+  },
+  {
+    "plugin_id": "herdr.file-picker",
+    "name": "File Picker",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Pop up fzf to insert file paths into the focused pane, for prompting AI coding agents.",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/herdr.file-picker-ca0c1392badf/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/herdr.file-picker-ca0c1392badf",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "actions": [
+      {
+        "id": "pick",
+        "title": "Pick files (relative to pane directory)",
+        "command": [
+          "bash",
+          "open.sh"
+        ]
+      },
+      {
+        "id": "pick-dirs",
+        "title": "Pick directories",
+        "command": [
+          "bash",
+          "open.sh",
+          "--directories"
+        ]
+      },
+      {
+        "id": "pick-git-root",
+        "title": "Pick files (relative to git root)",
+        "command": [
+          "bash",
+          "open.sh",
+          "--git-root"
+        ]
+      },
+      {
+        "id": "pick-zoxide",
+        "title": "Pick files from a zoxide directory",
+        "command": [
+          "bash",
+          "open.sh",
+          "--zoxide"
+        ]
+      },
+      {
+        "id": "pick-zoxide-dir-only",
+        "title": "Insert a zoxide directory path",
+        "command": [
+          "bash",
+          "open.sh",
+          "--zoxide",
+          "--dir-only"
+        ]
+      },
+      {
+        "id": "pick-zoxide-git-root",
+        "title": "Pick files from a zoxide directory (relative to git root)",
+        "command": [
+          "bash",
+          "open.sh",
+          "--zoxide",
+          "--git-root"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker",
+        "title": "File picker",
+        "placement": "popup",
+        "width": "80%",
+        "height": "60%",
+        "command": [
+          "bash",
+          "herdr-file-picker"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "shivammehta25",
+      "repo": "herdr-file-picker",
+      "resolved_commit": "576a0fc421ef266c3b32518a574ae3630996a998",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/herdr.file-picker-ca0c1392badf",
+      "installed_unix_ms": 1786515046400
+    }
+  },
+  {
+    "plugin_id": "jona.editor",
+    "name": "jona-editor",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Open nvim in a herdr popup (lazygit edit bridge)",
+    "manifest_path": "/home/jona/.config/herdr/plugins/jona-editor/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/jona-editor",
+    "enabled": true,
+    "platforms": [
+      "linux"
+    ],
+    "panes": [
+      {
+        "id": "edit",
+        "title": "nvim",
+        "placement": "popup",
+        "width": "80%",
+        "height": "80%",
+        "command": [
+          "bash",
+          "-c",
+          "exec ${EDIT_PROG:-nvim} ${EDIT_ARGS} -- \"$EDIT_FILE\""
+        ]
+      }
+    ],
+    "source": {
+      "kind": "local"
+    }
+  },
+  {
+    "plugin_id": "official.browser",
+    "name": "Browser",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.4",
+    "description": "Open and inspect real browser pages from Herdr.",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/official.browser-ff2a44eccae9/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/official.browser-ff2a44eccae9",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "actions": [
+      {
+        "id": "open-localhost",
+        "title": "Open localhost in browser",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bun",
+          "run",
+          "src/actions/open-localhost.ts"
+        ]
+      },
+      {
+        "id": "status",
+        "title": "Browser status",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bun",
+          "run",
+          "src/actions/status.ts"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "browser",
+        "title": "Browser",
+        "placement": "split",
+        "command": [
+          "bun",
+          "run",
+          "src/viewer.ts"
+        ]
+      }
+    ],
+    "link_handlers": [
+      {
+        "id": "localhost",
+        "title": "Open in Herdr Browser",
+        "pattern": "^https?://(localhost|127\\.0\\.0\\.1|\\[::1\\])(:[0-9]+)?([/?#].*)?$",
+        "action": "open-localhost"
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "ogulcancelik",
+      "repo": "herdr-browser",
+      "resolved_commit": "be6888b71cf4eb5939ee79a746bd1a1c22ade046",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/official.browser-ff2a44eccae9",
+      "installed_unix_ms": 1786567827663
+    }
+  },
+  {
+    "plugin_id": "yemeni.agent-timer",
+    "name": "Agent Timer",
+    "version": "0.2.4",
+    "min_herdr_version": "0.8.0",
+    "description": "Alternate agent status labels with a reboot-safe persistent timer",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/yemeni.agent-timer-c41778ef5b39/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/yemeni.agent-timer-c41778ef5b39",
+    "enabled": true,
+    "platforms": [
+      "linux"
+    ],
+    "startup": [
+      {
+        "command": [
+          "bash",
+          "timer.sh",
+          "--ensure"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "start",
+        "title": "Start agent timer",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "timer.sh",
+          "--start"
+        ]
+      },
+      {
+        "id": "stop",
+        "title": "Stop agent timer",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "timer.sh",
+          "--stop"
+        ]
+      },
+      {
+        "id": "toggle",
+        "title": "Toggle agent timer",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "timer.sh",
+          "--toggle"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.created",
+        "command": [
+          "bash",
+          "timer.sh",
+          "--ensure"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "Yemeni",
+      "repo": "herdr-agent-timer",
+      "resolved_commit": "98140d8323b0abb779a0243708f5ec74db43bff0",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/yemeni.agent-timer-c41778ef5b39",
+      "installed_unix_ms": 1786593559581
+    }
+  },
+  {
+    "plugin_id": "zenbu-labs.terminal-browser",
+    "name": "Terminal Browser",
+    "version": "0.1.0",
+    "min_herdr_version": "0.8.0",
+    "description": "Open a real browser split next to your herdr panes",
+    "manifest_path": "/home/jona/.config/herdr/plugins/github/zenbu-labs.terminal-browser-af24e09053e7/herdr-plugin/herdr-plugin.toml",
+    "plugin_root": "/home/jona/.config/herdr/plugins/github/zenbu-labs.terminal-browser-af24e09053e7/herdr-plugin",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "-c",
+          "set -o pipefail; curl -fsSL https://terminal-browser.sh/install | bash"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open-split",
+        "title": "Open terminal-browser (right split)",
+        "description": "Split the focused pane and open terminal-browser in it",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "open-split.sh"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "zenbu-labs",
+      "repo": "terminal-browser",
+      "subdir": "herdr-plugin",
+      "resolved_commit": "23dd4b5a1866747bb5cd59e451ec836e05481239",
+      "managed_path": "/home/jona/.config/herdr/plugins/github/zenbu-labs.terminal-browser-af24e09053e7",
+      "installed_unix_ms": 1786515047709
+    }
+  }
+]

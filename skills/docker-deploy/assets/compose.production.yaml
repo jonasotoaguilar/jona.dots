@@ -1,0 +1,62 @@
+# Production overlay for Docker Compose (non-Swarm).
+# Run: docker compose -f compose.yaml -f compose.production.yaml
+#       up -d --wait
+# Modern naming: compose.yaml (never docker-compose.yml),
+# no top-level version key.
+services:
+  app:
+    image: ghcr.io/owner/app:2026-08-12   # pinned tag, never :latest
+                                          # (or pin a digest)
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    secrets:
+      - db_password
+    env_file:
+      - .env.production                   # gitignored; non-secret config
+    depends_on:
+      db:
+        condition: service_healthy   # waits for healthcheck before starting
+    networks:
+      - frontend-net                      # external ingress for clients
+      - internal-net                      # reach db/cache without host ports
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - internal-net      # no host ports; reachable only from app
+
+volumes:
+  pgdata:
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt   # mounted at /run/secrets/db_password
+
+networks:
+  frontend-net:
+  internal-net:
+    internal: true                       # no external connectivity

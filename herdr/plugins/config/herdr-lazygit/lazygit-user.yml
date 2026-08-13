@@ -1,0 +1,17 @@
+# lazygit-user.yml — your personal override layer for the herdr-lazygit plugin.
+#
+# Settings here are merged OVER the plugin's bundled lazygit-config.yml
+# (lazygit merges the comma-separated LG_CONFIG_FILE list left to right).
+# Add any lazygit config keys you want to customize, e.g.:
+#
+#   gui:
+#     nerdFontsVersion: "3"
+#
+# Full reference: https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+
+# Edit in a herdr popup instead of the sidebar: lazygit runs the bridge,
+# herdr opens nvim in an 80% popup, and quitting nvim closes it.
+os:
+  edit: "python3 /home/jona/.config/herdr/plugins/jona-editor/lazygit-edit.py {{filename}}"
+  editAtLine: "python3 /home/jona/.config/herdr/plugins/jona-editor/lazygit-edit.py {{filename}}:{{line}}"
+  editAtLineAndWait: "python3 /home/jona/.config/herdr/plugins/jona-editor/lazygit-edit.py {{filename}}:{{line}}"
