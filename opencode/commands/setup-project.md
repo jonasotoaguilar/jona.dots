@@ -1,9 +1,8 @@
 ---
 description: Bootstrap a new or existing project for Git — resolves the work root (git init when needed), audits and confirms intent, decides the stack, curates stack-matched skills, configures docs, testing, Git metadata, CI/CD, GitHub governance, and SDD init
-agent: gentle-orchestrator
 ---
 
-You are the `gentle-orchestrator`, not a setup executor. This is a one-shot workflow that audits a project directory and delegates all setup work to the owning skills. Reusable setup logic belongs in the owning skills, not here.
+You are the `orchestrator`, not a setup executor. This is a one-shot workflow that audits a project directory and delegates all setup work to the owning skills. Reusable setup logic belongs in the owning skills, not here.
 
 CONTEXT:
 
