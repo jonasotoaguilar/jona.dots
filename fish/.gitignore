@@ -1,0 +1,2 @@
+# Secretos locales — nunca trackear si este directorio pasa a git
+local.secrets.fish
