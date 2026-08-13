@@ -70,7 +70,7 @@ float waterFlow(vec2 p, vec2 start, vec2 end, float time, float seed) {
     return mainFlow + flowLines;
 }
 
-// Gentle water ripple effect at cursor
+// Water ripple effect at cursor
 float waterRipple(vec2 p, vec2 center, float time, float intensity) {
     float dist = distance(p, center);
     float ripple = sin(dist * 100.0 - time * 8.0) * exp(-dist * 50.0);
@@ -81,7 +81,7 @@ const vec3 WATER_BLUE = vec3(0.3, 0.7, 1.0); // Clear water blue
 const vec3 WATER_WHITE = vec3(0.8, 0.9, 1.0); // Water foam white
 const vec3 DEEP_BLUE = vec3(0.1, 0.4, 0.8); // Deep water blue
 const vec3 CURSOR_COLOR = vec3(0.6, 0.8, 1.0); // Soft blue cursor
-const float DURATION = 0.4; // Gentle fade
+const float DURATION = 0.4; // Fade
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
@@ -113,13 +113,13 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
         // Main water breathing effect - fluid flowing lines
         float waterEffect = waterFlow(vu, centerCP, centerCC, iTime, seed);
 
-        // Gentle ripple at current cursor position
+        // Ripple at current cursor position
         float ripple = waterRipple(vu, centerCC, iTime, 1.0 - progress);
 
         // Fade effects smoothly
         waterEffect *= (1.0 - easedProgress);
 
-        // Apply water colors with gentle intensity
+        // Apply water colors with soft intensity
         // Main flow - deep blue to white gradient
         float flowIntensity = clamp(waterEffect * 0.3, 0.0, 1.0);
         newColor = mix(newColor, vec4(DEEP_BLUE, 0.6), flowIntensity * 0.4);
@@ -136,7 +136,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
         newColor = mix(newColor, vec4(WATER_BLUE, 0.5), rippleIntensity);
     }
 
-    // Draw current cursor with gentle blue glow
+    // Draw current cursor with soft blue glow
     float cursorGlow = exp(-abs(sdfCurrentCursor) * 40.0) * 0.2;
     newColor = mix(newColor, vec4(CURSOR_COLOR, 0.8), antialising(sdfCurrentCursor));
     newColor = mix(newColor, vec4(WATER_BLUE, 0.4), cursorGlow);
