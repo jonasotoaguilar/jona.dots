@@ -1,0 +1,4 @@
+# Cancel the global gitignore rule that ignores opencode.json
+# (~/.config/git/.gitignore ignores any opencode.json for every project).
+# This repo tracks its OpenCode configuration, so un-ignore it here.
+!opencode.json
